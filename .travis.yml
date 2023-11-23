@@ -1,0 +1,36 @@
+env:
+  global:
+    - AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
+    - AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
+
+language: java
+
+install:
+  - pip install awscli
+  - export PATH=$PATH:$HOME/.local/bin
+
+jdk:
+  - openjdk17
+
+addons:
+  chrome: stable
+
+before_script:
+  - ./cleanup.sh
+
+script:
+  - 'if [ "$TRAVIS_EVENT_TYPE" != "cron" ]; then echo "Not a cron job, skipping build"; exit 0; fi'
+  - aws --version
+  - mvn clean test -P newDevelopment
+
+notifications:
+  email:
+    recipients:
+      - sachin@aktivolabs.com
+    on_success: always
+    on_failure: always
+
+# Cron job to run the build and test every day at 11:00 AM
+cron:
+  - cron: "25 12 * * *"
+    name: "Build and Test"
