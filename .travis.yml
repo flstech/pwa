@@ -1,7 +1,3 @@
-env:
-  global:
-    - AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
-    - AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
 
 language: java
 
@@ -26,11 +22,11 @@ script:
 notifications:
   email:
     recipients:
-      - sachin@aktivolabs.com
+      - bimbstech@gmail.com
     on_success: always
     on_failure: always
 
 # Cron job to run the build and test every day at 11:00 AM
 cron:
-  - cron: "25 12 * * *"
+  - cron: "09 13 * * *"
     name: "Build and Test"
