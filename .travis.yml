@@ -14,6 +14,12 @@ addons:
 before_script:
   - ./cleanup.sh
 
+# Cron job to run the build and test every day at 11:00 AM
+cron:
+  - cron: "09 13 * * *"
+    name: "Build and Test"
+
+
 script:
   - 'if [ "$TRAVIS_EVENT_TYPE" != "cron" ]; then echo "Not a cron job, skipping build"; exit 0; fi'
   - aws --version
@@ -26,7 +32,3 @@ notifications:
     on_success: always
     on_failure: always
 
-# Cron job to run the build and test every day at 11:00 AM
-cron:
-  - cron: "09 13 * * *"
-    name: "Build and Test"
