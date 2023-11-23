@@ -1,9 +1,4 @@
-
 language: java
-
-install:
-  - pip install awscli
-  - export PATH=$PATH:$HOME/.local/bin
 
 jdk:
   - openjdk17
@@ -11,19 +6,25 @@ jdk:
 addons:
   chrome: stable
 
+install:
+  - pip install awscli
+  - export PATH=$PATH:$HOME/.local/bin
+
 before_script:
   - ./cleanup.sh
 
 # Cron job to run the build and test every day at 11:00 AM
 cron:
-  - cron: "16 13 * * *"
-    name: "Build and Test"
-
+  - cron: "40 13 * * *"
+    name: "Build and Test Cron"
+    script:
+      - 'if [ "$TRAVIS_EVENT_TYPE" != "cron" ]; then echo "Not a cron job, skipping build"; exit 0; fi'
+      - aws --version
+      - mvn clean test -P newDevelopment
 
 script:
-  - 'if [ "$TRAVIS_EVENT_TYPE" != "cron" ]; then echo "Not a cron job, skipping build"; exit 0; fi'
-  - aws --version
-  - mvn clean test -P newDevelopment
+  - 'if [ "$TRAVIS_EVENT_TYPE" = "cron" ]; then echo "Cron job build, skipping main build"; exit 0; fi'
+  - # Add your regular build commands here
 
 notifications:
   email:
@@ -31,4 +32,3 @@ notifications:
       - bimbstech@gmail.com
     on_success: always
     on_failure: always
-
