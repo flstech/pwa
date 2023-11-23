@@ -16,7 +16,7 @@ before_script:
 
 # Cron job to run the build and test every day at 11:00 AM
 cron:
-  - cron: "09 13 * * *"
+  - cron: "16 13 * * *"
     name: "Build and Test"
 
 
