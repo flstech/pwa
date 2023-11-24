@@ -13,19 +13,19 @@ install:
 before_script:
   - ./cleanup.sh
 
-# Cron job to run the build and test every day at 13:40 UTC
+# Cron job to run the build and test every day at 13:45 UTC
 cron:
-  - cron: "30 03 * * *"
+  - cron: "49 03 * * *"
     name: "Build and Test Cron"
-    script:
-      - 'if [ "$TRAVIS_EVENT_TYPE" != "cron" ]; then echo "Not a cron job, skipping build"; exit 0; fi'
-      - aws --version
-      - mvn clean test -P newDevelopment
-
-
+      
 script:
-  - 'if [ "$TRAVIS_EVENT_TYPE" = "cron" ]; then echo "Cron job build, skipping main build"; exit 0; fi'
-  - # Add your regular build commands here
+  - if [ "$TRAVIS_EVENT_TYPE" = "cron" ]; then
+      echo "Cron job build";
+      aws --version;
+      mvn clean test -P newDevelopment;
+    else
+      echo "Not a cron job, skipping build";
+    fi
 
 notifications:
   email:
