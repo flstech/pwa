@@ -15,12 +15,13 @@ before_script:
 
 # Cron job to run the build and test every day at 13:40 UTC
 cron:
-  - cron: "55 02 * * *"
+  - cron: "04 03 * * *"
     name: "Build and Test Cron"
     script:
       - 'if [ "$TRAVIS_EVENT_TYPE" != "cron" ]; then echo "Not a cron job, skipping build"; exit 0; fi'
       - aws --version
       - mvn clean test -P newDevelopment
+
 
 script:
   - 'if [ "$TRAVIS_EVENT_TYPE" = "cron" ]; then echo "Cron job build, skipping main build"; exit 0; fi'
